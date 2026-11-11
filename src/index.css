@@ -1,0 +1,296 @@
+:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background: #171006;
+  font-family: 'Songti SC', 'Noto Serif SC', 'STSong', 'SimSun', serif;
+}
+
+.app {
+  position: fixed;
+  inset: 0;
+  height: 100%;
+}
+
+canvas {
+  display: block;
+}
+
+/* ---------- 覆盖层 UI ---------- */
+
+.ui {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  color: #f7e9cd;
+  text-shadow:
+    0 1px 18px rgba(40, 20, 0, 0.85),
+    0 0 3px rgba(40, 20, 0, 0.5);
+  user-select: none;
+  z-index: 5;
+}
+
+.brand {
+  position: absolute;
+  top: 34px;
+  left: 40px;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+.hud {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  opacity: 0.85;
+}
+
+.hud-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  pointer-events: auto;
+}
+
+.music {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border: 1px solid rgba(247, 233, 205, 0.24);
+  border-radius: 999px;
+  background: rgba(40, 24, 8, 0.16);
+  backdrop-filter: blur(6px);
+  color: #f7e9cd;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.music svg {
+  width: 14px;
+  height: 14px;
+}
+
+.music:hover,
+.music[aria-pressed='true'] {
+  border-color: rgba(226, 169, 79, 0.65);
+  background: rgba(226, 169, 79, 0.12);
+}
+
+.music:focus-visible {
+  outline: 2px solid #e2a94f;
+  outline-offset: 3px;
+}
+
+.wind {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+  font-size: 14px;
+}
+
+.wind input[type='range'] {
+  width: 130px;
+  accent-color: #e2a94f;
+  cursor: pointer;
+}
+
+/* ---------- 加载面纱 ---------- */
+
+.veil {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: radial-gradient(120% 100% at 50% 100%, #3a2410 0%, #171006 70%);
+  color: #f2dfb8;
+  transition: opacity 1.1s ease;
+  z-index: 10;
+}
+
+.veil.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.veil-title {
+  font-size: 42px;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+}
+
+.veil-sub {
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  opacity: 0.6;
+  animation: breathe 1.6s ease-in-out infinite;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+.veil-hint {
+  max-width: 340px;
+  padding: 0 24px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  opacity: 0.55;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+.veil-retry {
+  pointer-events: auto;
+  padding: 8px 20px;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 223, 184, 0.35);
+  background: transparent;
+  color: #f2dfb8;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+}
+
+.veil-retry:hover {
+  background: rgba(242, 223, 184, 0.1);
+}
+
+/* ---------- 不支持 WebGL / 初始化失败时的静态兜底 ---------- */
+
+.fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #171006;
+}
+
+.fallback-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.5) saturate(0.95);
+}
+
+.fallback-card {
+  position: relative;
+  max-width: 440px;
+  margin: 24px;
+  padding: 30px 32px;
+  border: 1px solid rgba(247, 233, 205, 0.16);
+  border-radius: 14px;
+  background: rgba(24, 14, 5, 0.72);
+  backdrop-filter: blur(10px);
+  color: #f7e9cd;
+  text-align: center;
+  text-shadow: 0 1px 18px rgba(40, 20, 0, 0.85);
+}
+
+.fallback-card h1 {
+  margin: 0 0 14px;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+}
+
+.fallback-card p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.fallback-hint {
+  opacity: 0.6;
+  font-size: 12px !important;
+}
+
+.fallback-retry {
+  margin-top: 14px;
+  padding: 9px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 223, 184, 0.35);
+  background: transparent;
+  color: #f2dfb8;
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+}
+
+.fallback-retry:hover {
+  background: rgba(242, 223, 184, 0.1);
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 640px) {
+  .brand {
+    top: 22px;
+    left: 22px;
+  }
+  .brand h1 {
+    font-size: 24px;
+  }
+  .hud {
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+    justify-content: flex-end;
+  }
+  .hint {
+    display: none;
+  }
+  .hud-controls {
+    gap: 12px;
+  }
+  .wind input[type='range'] {
+    width: 104px;
+  }
+}
