@@ -1,4 +1,4 @@
-import { useMemo, useRef, type ComponentRef } from 'react'
+import { useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Sky, Cloud, Clouds, OrbitControls } from '@react-three/drei'
 import {
@@ -21,7 +21,6 @@ import { Birds } from './Birds'
 const sunPosition = SUN_DIR.clone().multiplyScalar(100).toArray() as [number, number, number]
 
 export function Scene() {
-  const controls = useRef<ComponentRef<typeof OrbitControls>>(null)
   const cloudTexture = useMemo(() => (QUALITY.clouds ? makeCloudTexture() : ''), [])
 
   // 时钟与风力的唯一驱动点:uTime/uWind 是被所有材质共享的同一 uniform 对象
@@ -77,7 +76,6 @@ export function Scene() {
       <Birds />
 
       <OrbitControls
-        ref={controls}
         makeDefault
         target={[0, 2.5, 0]}
         enableDamping
@@ -89,9 +87,6 @@ export function Scene() {
         maxPolarAngle={Math.PI / 2 - 0.035}
         autoRotate
         autoRotateSpeed={0.1}
-        onStart={() => {
-          if (controls.current) controls.current.autoRotate = false
-        }}
       />
 
       {QUALITY.effects && (

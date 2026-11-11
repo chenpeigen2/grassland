@@ -100,8 +100,7 @@ canvas {
   height: 14px;
 }
 
-.music:hover,
-.music[aria-pressed='true'] {
+.music:hover {
   border-color: rgba(226, 169, 79, 0.65);
   background: rgba(226, 169, 79, 0.12);
 }

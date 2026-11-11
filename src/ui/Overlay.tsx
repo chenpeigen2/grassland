@@ -11,6 +11,7 @@ export function Overlay() {
   const userPaused = useRef(false)
   const [audio] = useState(() => {
     const element = new Audio(`${import.meta.env.BASE_URL}audio/ahead-of-us.m4a`)
+    element.autoplay = true
     element.loop = true
     element.preload = 'auto'
     element.volume = 0.32
@@ -99,7 +100,6 @@ export function Overlay() {
               type="button"
               className="music"
               aria-label={playing ? '暂停配乐' : '播放配乐'}
-              aria-pressed={playing}
               title="Ahead of Us · 小瀬村晶"
               onClick={toggleMusic}
             >
